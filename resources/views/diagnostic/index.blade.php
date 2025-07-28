@@ -31,7 +31,9 @@
                         </div>
                     @endforeach
 
-                    <button class="btn btn-primary">Enviar respostas</button>
+                    @if ($user->role === 'user')
+                        <button class="btn btn-primary">Enviar respostas</button>
+                    @endif
                 </form>
             </div>
         </div>

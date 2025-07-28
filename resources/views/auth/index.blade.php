@@ -37,7 +37,10 @@
     
             <div class="form-group mt-3">
                 <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <div class="position-relative">
+                    <input type="password" class="form-control" id="password" name="password">
+                    <i class="bi bi-eye-fill" id="btnShowPassword" title="Mostrar senha"></i>
+                </div>
             </div>
     
             <div class="form-group mt-4">
