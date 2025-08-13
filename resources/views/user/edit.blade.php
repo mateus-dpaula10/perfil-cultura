@@ -57,6 +57,18 @@
                     </div>
 
                     <div class="form-group mt-3">
+                        <button type="button" id="generate-password" class="btn btn-secondary">Gerar senha forte</button>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="generated-password" class="form-label">Senha gerada (copiar):</label>
+                        <div class="input-group">
+                            <input type="text" id="generated-password" class="form-control" readonly>
+                            <button type="button" id="copy-password" class="btn btn-primary">Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
                         <label for="password" class="form-label">Senha</label>
                         <input type="password" name="password" id="password" class="form-control">
                     </div>
@@ -87,6 +99,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             const passwordInput = document.getElementById('password');
             const strengthBar = document.getElementById('strength-bar');
+            const generateBtn = document.getElementById('generate-password');
+            const generatedText = document.getElementById('generated-password');
+            const copyBtn = document.getElementById('copy-password');
 
             const calculateStrength = (password) => {
                 let score = 0;
@@ -124,6 +139,37 @@
             passwordInput.addEventListener('input', function() {
                 updateStrengthBar(passwordInput.value);
             });
-        })           
+
+            const gerarSenha = (tamanho = 12) => {
+                const minusculas = 'abcdefghijklmnopqrstuvwxyz';
+                const maiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const numeros = '0123456789';
+                const especiais = '@$!%*?&';
+                
+                let senha = minusculas[Math.floor(Math.random() * minusculas.length)]
+                        + maiusculas[Math.floor(Math.random() * maiusculas.length)]
+                        + numeros[Math.floor(Math.random() * numeros.length)]
+                        + especiais[Math.floor(Math.random() * especiais.length)];
+
+                const todos = minusculas + maiusculas + numeros + especiais;
+                for (let i = senha.length; i < tamanho; i++) {
+                    senha += todos[Math.floor(Math.random() * todos.length)];
+                }
+
+                return senha.split('').sort(() => 0.5 - Math.random()).join('');
+            }
+
+            generateBtn.addEventListener('click', () => {
+                const novaSenha = gerarSenha();
+                generatedText.value = novaSenha;
+            });
+
+            copyBtn.addEventListener('click', () => {
+                generatedText.select();
+                generatedText.setSelectionRange(0, 99999); 
+                document.execCommand('copy');
+                alert('Senha copiada para a área de transferência!');
+            });
+        })        
     </script>
 @endpush
