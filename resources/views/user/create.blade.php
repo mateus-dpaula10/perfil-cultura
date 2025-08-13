@@ -3,7 +3,7 @@
 @section('title', 'Criar usuário')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 @if($errors->any())
@@ -96,14 +96,15 @@
                 const strength = calculateStrength(password);
                 strengthBar.style.width = `${strength}%`;
 
-                if (strength < 40) {
-                    strengthBar.classList.remove('bg-success', 'bg-warning');
-                    strengthBar.classList.add('bg-danger');
-                } else if (strength >= 40 && strength < 80) {
-                    strengthBar.classList.remove('bg-danger', 'bg-success');
-                    strengthBar.classList.add('bg-warning');
+                strengthBar.classList.remove('bg-danger', 'bg-warning', 'bg-success');
+
+                if (strength < 100) {
+                    if (strength < 40) {
+                        strengthBar.classList.add('bg-danger');
+                    } else {
+                        strengthBar.classList.add('bg-warning');
+                    }
                 } else {
-                    strengthBar.classList.remove('bg-danger', 'bg-warning');
                     strengthBar.classList.add('bg-success');
                 }
             };

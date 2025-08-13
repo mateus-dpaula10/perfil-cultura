@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -89,7 +90,11 @@ class AuthController extends Controller
     public function update(Request $request, User $user) {
         $request->validate([
             'name'     => 'string|required',
-            'email'    => 'email|required|unique:users,email,' . $user->id,
+            'email'    => [
+                'email',
+                'required',
+                Rule::unique('users')->ignore($user->id)
+            ],
             'role'     => 'string|required',
             'password' => [
                 'nullable',

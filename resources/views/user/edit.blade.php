@@ -3,7 +3,7 @@
 @section('title', 'Criar usuário')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 @if($errors->any())
@@ -31,13 +31,9 @@
                         <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
                     </div>
 
-                    @php
-                        $user = auth()->user();
-                    @endphp
-
                     <div class="form-group mt-3">
                         <label for="email" class="form-label">E-mail</label>
-                        @if($user->role === 'admin')
+                        @if(auth()->user()->role === 'admin')
                             <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" required>
                         @else
                             <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" readonly required>
@@ -46,7 +42,7 @@
 
                     <div class="form-group mt-3">
                         <label for="role" class="form-label">Função</label>
-                        @if($user->role === 'admin')
+                        @if(auth()->user()->role === 'admin')
                             <select name="role" id="role" class="form-select">
                                 <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>Usuário</option>
                                 <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Administrador</option>
@@ -112,14 +108,15 @@
                 const strength = calculateStrength(password);
                 strengthBar.style.width = `${strength}%`;
 
-                if (strength < 40) {
-                    strengthBar.classList.remove('bg-success', 'bg-warning');
-                    strengthBar.classList.add('bg-danger');
-                } else if (strength >= 40 && strength < 80) {
-                    strengthBar.classList.remove('bg-danger', 'bg-success');
-                    strengthBar.classList.add('bg-warning');
+                strengthBar.classList.remove('bg-danger', 'bg-warning', 'bg-success');
+
+                if (strength < 100) {
+                    if (strength < 40) {
+                        strengthBar.classList.add('bg-danger');
+                    } else {
+                        strengthBar.classList.add('bg-warning');
+                    }
                 } else {
-                    strengthBar.classList.remove('bg-danger', 'bg-warning');
                     strengthBar.classList.add('bg-success');
                 }
             };
@@ -127,6 +124,6 @@
             passwordInput.addEventListener('input', function() {
                 updateStrengthBar(passwordInput.value);
             });
-        })        
+        })           
     </script>
 @endpush
