@@ -21,5 +21,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/usuarios/create', [AuthController::class, 'create'])->name('usuario.create');
         Route::post('/usuarios', [AuthController::class, 'store'])->name('usuario.store');
         Route::delete('/usuarios/delete/{user}', [AuthController::class, 'destroy'])->name('usuario.destroy');    
+        Route::get('/usuarios/{user}/respostas', [AuthController::class, 'respostas'])->name('usuario.respostas');    
     });
 });

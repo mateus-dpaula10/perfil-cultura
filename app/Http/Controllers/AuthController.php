@@ -133,4 +133,30 @@ class AuthController extends Controller
 
         return redirect()->route('usuario.user')->with('success', 'Usuário excluído com sucesso.');
     }
+
+    public function respostas(User $user) {
+        $diagnostics = $user->answers()
+            ->with(['diagnostic.options', 'option'])
+            ->get()
+            ->groupBy('diagnostic_id')
+            ->map(function ($answers) {
+                $diagnostic = $answers->first()->diagnostic;
+                $selectedOptions = $answers->pluck('option_id')->toArray();
+
+                return [
+                    'diagnostic_id' => $diagnostic->id,
+                    'question'      => $diagnostic->question,
+                    'options'       => $diagnostic->options->map(function ($option) use ($selectedOptions) {
+                        return [
+                            'id'       => $option->id,
+                            'text'     => $option->text,
+                            'selected' => in_array($option->id, $selectedOptions)
+                        ];
+                    })
+                ];
+            })
+            ->values();
+
+        return response()->json($diagnostics);
+    }
 }

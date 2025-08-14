@@ -14,10 +14,31 @@
                 @endif
 
                 <h3 class="mb-5">Diagnóstico de perfil de cultura para '{{ $user->name }}'</h3>    
-                
-                <form action="{{ route('diagnostic.store') }}" method="POST">
-                    @csrf
 
+                @if ($user->role === 'user')
+                    <form action="{{ route('diagnostic.store') }}" method="POST">
+                        @csrf
+
+                        @foreach($diagnostics as $index => $diagnostic )
+                            <div class="mb-3">
+                                <strong>{{ $index + 1 }} - {{ $diagnostic->question }}</strong> <br>
+
+                                @php
+                                    $options = $diagnostic->options->shuffle(); 
+                                @endphp
+
+                                @foreach($options as $option)
+                                    <label style="display: block">
+                                        <input type="radio" name="answers[{{ $diagnostic->id }}]" value="{{ $option->id }}" required>
+                                        {{ $option->text }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        @endforeach
+
+                        <button class="btn btn-primary">Enviar respostas</button>
+                    </form>
+                @else
                     @foreach($diagnostics as $index => $diagnostic )
                         <div class="mb-3">
                             <strong>{{ $index + 1 }} - {{ $diagnostic->question }}</strong> <br>
@@ -28,17 +49,13 @@
 
                             @foreach($options as $option)
                                 <label style="display: block">
-                                    <input type="radio" name="answers[{{ $diagnostic->id }}]" value="{{ $option->id }}" required>
+                                    <input type="radio" name="answers[{{ $diagnostic->id }}]" value="{{ $option->id }}" disabled required>
                                     {{ $option->text }}
                                 </label>
                             @endforeach
                         </div>
                     @endforeach
-
-                    @if ($user->role === 'user')
-                        <button class="btn btn-primary">Enviar respostas</button>
-                    @endif
-                </form>
+                @endif                
             </div>
         </div>
     </div>
