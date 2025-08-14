@@ -118,7 +118,9 @@
 
                 container.innerHTML = 'Carregando...';
 
-                fetch(`/usuarios/${userId}/respostas`)
+                const baseUrl = "{{ url('usuarios') }}";
+
+                fetch(`${baseUrl}/${userId}/respostas`)
                     .then(res => res.json())
                     .then(data => {
                         if (data.length > 0) {
@@ -130,7 +132,7 @@
                                         <label style="display: block">
                                             <input type="radio" disabled
                                                 ${option.selected ? 'checked' : ''}>
-                                            ${option.text}
+                                            ${option.text} <span class="text-muted">(${option.points})</span>
                                         </label>
                                     `;
                                 });

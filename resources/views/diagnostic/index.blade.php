@@ -30,7 +30,7 @@
                                 @foreach($options as $option)
                                     <label style="display: block">
                                         <input type="radio" name="answers[{{ $diagnostic->id }}]" value="{{ $option->id }}" required>
-                                        {{ $option->text }}
+                                        {{ preg_replace('/\s*\(.*\)$/', '', $option->text) }}
                                     </label>
                                 @endforeach
                             </div>
@@ -50,7 +50,7 @@
                             @foreach($options as $option)
                                 <label style="display: block">
                                     <input type="radio" name="answers[{{ $diagnostic->id }}]" value="{{ $option->id }}" disabled required>
-                                    {{ $option->text }}
+                                    {{ $option->text }} <span class="text-muted">({{ $option->points }})</span>
                                 </label>
                             @endforeach
                         </div>

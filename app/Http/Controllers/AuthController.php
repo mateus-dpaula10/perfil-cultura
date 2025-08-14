@@ -150,7 +150,8 @@ class AuthController extends Controller
                         return [
                             'id'       => $option->id,
                             'text'     => $option->text,
-                            'selected' => in_array($option->id, $selectedOptions)
+                            'selected' => in_array($option->id, $selectedOptions),
+                            'points'   => $option->points
                         ];
                     })
                 ];
